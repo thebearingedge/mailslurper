@@ -1,13 +1,13 @@
 FROM --platform=$BUILDPLATFORM docker.io/library/golang:1.19.13-alpine3.18 as builder
 
-ARG TARGETOS TARGETARCH
+ARG ESC_VERSION="v0.2.0"
 
 LABEL maintainer="erguotou525@gmail.compute"
 
-RUN apk --no-cache add git libc-dev gcc ca-certificates
-RUN go install github.com/mjibson/esc@v0.2.0
+ARG TARGETOS TARGETARCH
 
-RUN ls "$GOPATH/bin"
+RUN apk --update --no-cache add git libc-dev gcc ca-certificates
+RUN go install github.com/mjibson/esc@${ESC_VERSION}
 
 COPY . /go/src/github.com/mailslurper/mailslurper
 WORKDIR /go/src/github.com/mailslurper/mailslurper/cmd/mailslurper
